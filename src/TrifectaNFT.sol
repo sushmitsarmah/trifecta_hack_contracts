@@ -4,13 +4,10 @@ pragma solidity ^0.8.20;
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
 import "@openzeppelin/contracts/access/AccessControl.sol";
-import "@openzeppelin/contracts/utils/Counters.sol";
 
 contract TrifectaNFT is ERC721, ERC721URIStorage, AccessControl {
-    using Counters for Counters.Counter;
-
     bytes32 public constant MINTER_ROLE = keccak256("MINTER_ROLE");
-    Counters.Counter private _tokenIdCounter;
+    uint256 private _nextTokenId;
 
     constructor() ERC721("TrifectaNFT", "TNFT") {
         _grantRole(DEFAULT_ADMIN_ROLE, msg.sender);
@@ -18,14 +15,13 @@ contract TrifectaNFT is ERC721, ERC721URIStorage, AccessControl {
     }
 
     function safeMint(address to, string memory uri) public onlyRole(MINTER_ROLE) {
-        uint256 tokenId = _tokenIdCounter.current();
-        _tokenIdCounter.increment();
+        uint256 tokenId = _nextTokenId++;
         _safeMint(to, tokenId);
         _setTokenURI(tokenId, uri);
     }
 
     // Override required functions
-    function _burn(uint256 tokenId) internal override(ERC721, ERC721URIStorage) {
+    function _burn(uint256 tokenId) internal override(ERC721) {
         super._burn(tokenId);
     }
 
