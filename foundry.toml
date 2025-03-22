@@ -1,3 +1,9 @@
+# foundry.toml
+
+solc_version = "0.8.26"
+evm_version = "cancun"
+ffi = true
+
 [profile.default]
 src = "src"
 out = "out"

@@ -1,66 +1,81 @@
-## Foundry
+# Trifecta DeFi Protocol
 
-**Foundry is a blazing fast, portable and modular toolkit for Ethereum application development written in Rust.**
+A DeFi protocol that integrates with Uniswap V3 for optimal token swaps, featuring custom ERC20 tokens and NFT rewards.
 
-Foundry consists of:
+## Contracts
 
--   **Forge**: Ethereum testing framework (like Truffle, Hardhat and DappTools).
--   **Cast**: Swiss army knife for interacting with EVM smart contracts, sending transactions and getting chain data.
--   **Anvil**: Local Ethereum node, akin to Ganache, Hardhat Network.
--   **Chisel**: Fast, utilitarian, and verbose solidity REPL.
+### TrifectaToken (ERC20)
+- Custom ERC20 token with minting capabilities
+- Role-based access control for minting
+- ERC20Permit functionality for gasless approvals
 
-## Documentation
+### TrifectaNFT (ERC721)
+- Custom NFT implementation with URI storage
+- Role-based minting control
+- Metadata support via URI storage
 
-https://book.getfoundry.sh/
+### TrifectaSwap
+- Uniswap V3 integration for token swaps
+- Automatic best pool detection based on liquidity
+- Support for exact input and exact output swaps
+- Slippage protection
+
+## Setup
+
+1. Install dependencies:
+```bash
+forge install OpenZeppelin/openzeppelin-contracts@v5.0.1
+forge install Uniswap/v3-core@v1.0.0
+forge install Uniswap/v3-periphery@v1.3.0
+```
+
+2. Set up environment variables:
+```bash
+export ETH_RPC_URL=your_ethereum_rpc_url
+export ETHERSCAN_API_KEY=your_etherscan_api_key
+```
+
+3. Build the project:
+```bash
+forge build
+```
+
+4. Run tests:
+```bash
+forge test
+```
 
 ## Usage
 
-### Build
+### Token Operations
+- Mint new tokens (requires MINTER_ROLE)
+- Transfer tokens
+- Use permit for gasless approvals
 
-```shell
-$ forge build
-```
+### NFT Operations
+- Mint new NFTs with custom URIs (requires MINTER_ROLE)
+- Transfer NFTs
+- View NFT metadata
 
-### Test
+### Swap Operations
+1. Find best liquidity pool for a token pair
+2. Execute exact input swaps
+3. Execute exact output swaps
 
-```shell
-$ forge test
-```
+## Testing
 
-### Format
+The project includes comprehensive tests for all contracts:
+- Token functionality tests
+- NFT minting and transfer tests
+- Swap integration tests using forked mainnet
 
-```shell
-$ forge fmt
-```
+## Security
 
-### Gas Snapshots
+- Role-based access control for privileged operations
+- Slippage protection for swaps
+- Reentrancy protection
+- Standard security practices from OpenZeppelin
 
-```shell
-$ forge snapshot
-```
+## License
 
-### Anvil
-
-```shell
-$ anvil
-```
-
-### Deploy
-
-```shell
-$ forge script script/Counter.s.sol:CounterScript --rpc-url <your_rpc_url> --private-key <your_private_key>
-```
-
-### Cast
-
-```shell
-$ cast <subcommand>
-```
-
-### Help
-
-```shell
-$ forge --help
-$ anvil --help
-$ cast --help
-```
+MIT
