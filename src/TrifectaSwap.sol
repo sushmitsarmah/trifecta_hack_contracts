@@ -13,7 +13,7 @@ import { IERC20 } from "openzeppelin-contracts/contracts/token/ERC20/IERC20.sol"
 import {Currency, CurrencyLibrary} from "v4-core/src/types/Currency.sol";
 
 contract TrifectaSwap is Ownable {
-    using StateLibrary for IPoolManager;
+    using CurrencyLibrary for Currency;
 
     UniversalRouter public immutable router;
     IPoolManager public immutable poolManager;
@@ -24,7 +24,6 @@ contract TrifectaSwap is Ownable {
         Currency currency1;
         uint24 fee;
         int24 tickSpacing;
-        IHooks hooks;
     }
     
     constructor(address _router, address _poolManager, address _permit2) {
@@ -77,7 +76,7 @@ contract TrifectaSwap is Ownable {
         inputs[0] = abi.encode(actions, params);
 
         // Execute the swap
-        router.execute(commands, inputs, deadline);
+        router.execute(command, inputs, deadline);
 
         // Verify and return the output amount
         amountOut = IERC20(key.currency1).balanceOf(address(this));
